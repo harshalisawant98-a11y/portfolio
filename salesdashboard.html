@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retail Store Sales Dashboard</title>
+<style>
+  body { font-family:'Segoe UI',sans-serif; background:#FFF8E1; margin:0; }
+  header { background:#0D47A1; color:#fff; text-align:center; padding:20px; font-size:24px; font-weight:bold; }
+  nav { display:flex; justify-content:center; background:#E1E1E1; }
+  nav button {
+    background:#C2185B; color:#fff; border:none; padding:10px 20px; margin:5px;
+    cursor:pointer; font-weight:600; border-radius:5px; transition:0.3s;
+  }
+  nav button:hover { background:#8BC34A; }
+  nav button.active { background:#8BC34A; }
+  .tab-content { display:none; padding:20px; }
+  .tab-content.active { display:block; }
+  .chart-box {
+    background:#fff; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    padding:15px; margin-bottom:20px;
+  }
+  h3 { color:#0D47A1; text-align:center; }
+  canvas { width:100%; height:300px; }
+  .summary {
+    background:#fff; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    padding:20px; text-align:center;
+  }
+  .summary h2 { color:#C2185B; }
+  .summary p { font-size:16px; color:#333; }
+</style>
+</head>
+<body>
+
+<header>Retail Store Sales Dashboard</header>
+
+<nav>
+  <button class="active" onclick="showTab('overview')">Overview</button>
+  <button onclick="showTab('category')">Category Analysis</button>
+  <button onclick="showTab('regional')">Regional Sales</button>
+  <button onclick="showTab('monthly')">Monthly Trends</button>
+  <button onclick="showTab('report')">Report & Summary</button>
+</nav>
+
+<!-- Overview -->
+<div id="overview" class="tab-content active">
+  <div class="chart-box">
+    <h3>Revenue by Product Category</h3>
+    <canvas id="categoryChart"></canvas>
+  </div>
+</div>
+
+<!-- Category Analysis -->
+<div id="category" class="tab-content">
+  <div class="chart-box">
+    <h3>Detailed Category Breakdown</h3>
+    <canvas id="categoryDetail"></canvas>
+  </div>
+</div>
+
+<!-- Regional Sales -->
+<div id="regional" class="tab-content">
+  <div class="chart-box">
+    <h3>Revenue by Region</h3>
+    <canvas id="regionChart"></canvas>
+  </div>
+</div>
+
+<!-- Monthly Trends -->
+<div id="monthly" class="tab-content">
+  <div class="chart-box">
+    <h3>Monthly Sales Trend</h3>
+    <canvas id="trendChart"></canvas>
+  </div>
+</div>
+
+<!-- Report & Summary -->
+<div id="report" class="tab-content">
+  <div class="summary">
+    <h2>Summary Insights</h2>
+    <p><strong>Total Revenue:</strong> ₹5,85,400</p>
+    <p><strong>Top Product:</strong> Laptops (₹2,70,000)</p>
+    <p><strong>Best Region:</strong> Maharashtra (36%)</p>
+    <p><strong>Observation:</strong> Sales peaked in January and dipped in March. Maharashtra leads overall performance.</p>
+    <button style="background:#C2185B;color:#fff;border:none;padding:10px 20px;border-radius:5px;">Download Report</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Tab switching
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Charts
+  new Chart(document.getElementById('categoryChart'), {
+    type:'bar',
+    data:{ labels:['Laptop','Phone','Tablet','Accessories','Camera'],
+      datasets:[{ label:'Revenue (₹)', data:[270000,150000,80000,85000,80000],
+      backgroundColor:['#C2185B','#8BC34A','#C2185B','#8BC34A','#C2185B'] }] },
+    options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  new Chart(document.getElementById('regionChart'), {
+    type:'pie',
+    data:{ labels:['Maharashtra','Karnataka','Gujarat'],
+      datasets:[{ data:[36,34,30], backgroundColor:['#C2185B','#8BC34A','#AED581'] }] }
+  });
+
+  new Chart(document.getElementById('trendChart'), {
+    type:'line',
+    data:{ labels:['Jan','Feb','Mar','Apr','May'],
+      datasets:[{ label:'Revenue (₹)', data:[315000,105000,58000,96000,108000],
+      borderColor:'#8BC34A', backgroundColor:'#C2185B', fill:false, tension:0.3 }] },
+    options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  new Chart(document.getElementById('categoryDetail'), {
+    type:'doughnut',
+    data:{ labels:['Electronics','Accessories','Appliances'],
+      datasets:[{ data:[60,25,15], backgroundColor:['#C2185B','#8BC34A','#AED581'] }] }
+  });
+</script>
+
+</body>
+</html>
